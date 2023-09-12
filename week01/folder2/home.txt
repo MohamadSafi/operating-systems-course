@@ -1,0 +1,9 @@
+total 32
+drwxr-xr-x 2 billy billy 4096 Apr 28 10:57 Videos
+drwxr-xr-x 2 billy billy 4096 Apr 28 10:57 Public
+drwxr-xr-x 2 billy billy 4096 Apr 28 10:57 Music
+drwxr-xr-x 2 billy billy 4096 Apr 28 10:57 Templates
+drwxr-xr-x 3 billy billy 4096 Jun 28 14:42 Desktop
+drwxr-xr-x 2 billy billy 4096 Sep  6 15:41 Pictures
+drwxr-xr-x 3 billy billy 4096 Sep  6 16:07 Documents
+drwxr-xr-x 3 billy billy 4096 Sep 12 20:36 Downloads

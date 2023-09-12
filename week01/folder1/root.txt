@@ -1,0 +1,26 @@
+total 2097232
+drwxr-xr-x   2 root root       4096 Dec  8  2022 srv
+drwxr-xr-x   2 root root       4096 Dec  8  2022 opt
+drwxr-xr-x   2 root root       4096 Dec  8  2022 mnt
+drwxr-xr-x  14 root root       4096 Dec  8  2022 usr
+drwxr-xr-x  14 root root       4096 Dec  8  2022 var
+drwxr-xr-x   2 root root       4096 Apr 28 10:57 snap
+drwx------   2 root root      16384 Apr 28 14:46 lost+found
+-rw-------   1 root root 2147483648 Apr 28 14:46 swapfile
+lrwxrwxrwx   1 root root         10 Apr 28 14:46 libx32 -> usr/libx32
+lrwxrwxrwx   1 root root          9 Apr 28 14:46 lib64 -> usr/lib64
+lrwxrwxrwx   1 root root          9 Apr 28 14:46 lib32 -> usr/lib32
+lrwxrwxrwx   1 root root          7 Apr 28 14:46 lib -> usr/lib
+lrwxrwxrwx   1 root root          7 Apr 28 14:46 bin -> usr/bin
+lrwxrwxrwx   1 root root          8 Apr 28 14:46 sbin -> usr/sbin
+drwxrwxr-x   2 root root       4096 Apr 28 14:48 cdrom
+drwxr-xr-x   3 root root       4096 Apr 28 14:48 home
+drwxr-xr-x   3 root root       4096 Apr 29 04:49 media
+drwxr-xr-x   3 root root       4096 Apr 29 09:45 boot
+drwx------   6 root root       4096 Apr 29 10:10 root
+dr-xr-xr-x  13 root root          0 Sep 12 18:50 sys
+dr-xr-xr-x 319 root root          0 Sep 12 18:50 proc
+drwxr-xr-x  20 root root       4520 Sep 12 18:50 dev
+drwxr-xr-x 137 root root      12288 Sep 12 20:42 etc
+drwxr-xr-x  34 root root       1020 Sep 12 22:41 run
+drwxrwxrwt  20 root root       4096 Sep 12 22:51 tmp

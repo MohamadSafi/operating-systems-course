@@ -1,0 +1,65 @@
+    1  less /proc/meminfo
+    2  free -m
+    3  sudo apt search grub
+    4  sudo apt install grub-customizer
+    5  grub-customizer 
+    6  sudo apt update
+    7  sudo apt upgrade
+    8  sudo apt --fix-broken install
+    9  sudo apt upgrade
+   10  apt-get install -f
+   11  sudo apt-get install -f
+   12  sudo apt upgrade
+   13  sudo apt --fix-broken install
+   14  sudo mv /etc/apt/sources.list.d/ /etc/apt/sources.list.d.bk/
+   15  sudo mkdir /etc/apt/sources.list.d/
+   16  sudo apt upgrade
+   17  sudp apt --fix-broken install
+   18  sudo apt --fix-broken install
+   19  cd Downloads/
+   20  ls
+   21  sudo install ./code_1.82.1-1694163687_amd64.deb 
+   22  sudo install ./code_1.82.1-1694163687_amd64.deb
+   23  sudo install --help ./code_1.82.1-1694163687_amd64.deb
+   24  sudo dpkg -i code_1.82.1-1694163687_amd64.deb 
+   25  cd Documents/
+   26  cd OS/
+   27  cd week01/
+   28  ls
+   29  ./ex4 
+   30  chmod ex4
+   31  ./ex4 
+   32  ls
+   33  ./ex3
+   34  ls
+   35  ./ex3.sh
+   36  sudo ./ex3.sh
+   37  chmod u+x ./ex3.sh
+   38  ./ex3.sh
+   39  sudo apt install vim
+   40  vim
+   41  sudo apt --fix-broken install vim
+   42  sudo apt --fix-broken install
+   43  ./code
+   44  .code
+   45  code
+   46  ls | grep gcc ~/usr/bin 
+   47  ls | grep gcc /usr/bin 
+   48  ls | grep gcc ./usr/bin 
+   49  ls | grep gcc ~/usr/bin 
+   50  ls /usr/bin | grep gcc  
+   51  ls /usr/bin | grep "gcc"  
+   52  ls /usr/bin | grep "gcc"
+   53  ls | grep "gcc" /usr/bin 
+   54  cd
+   55  ls | grep "gcc" /usr/bin 
+   56  cd Do
+   57  cd Documents/
+   58  cd OS/
+   59  cd week01/
+   60  ls
+   61  ./ex1.sh
+   62  chmod u+x ex1.sh
+   63  ./ex1.sh
+   64  chmod u+x ex2.sh
+   65  ./ex2.sh
