@@ -1,0 +1,3 @@
+gcc scheduler_sjf.c -o scheduler_sjf
+./scheduler_sjf data.txt
+

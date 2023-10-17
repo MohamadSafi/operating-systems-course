@@ -1,0 +1,5 @@
+In the shortest job first algorithm (non-preemptive version), processes are scheduled based on the shortest burst time. This method can provide a minimized average waiting time, but it may also lead to the "convoy effect," where longer processes wait for shorter ones to complete, thereby increasing their waiting time.
+
+Comparing the outputs of both the exercises, SJF generally leads to lower average waiting times for sets of processes with varied burst times. However, it can be unfair to longer processes. In the previous exercise, processes were scheduled in a more "come first, serve first" manner, which may lead to higher average waiting times but can be considered more predictable and fair to longer processes.
+
+SJF is beneficial when we have a good estimation of the burst time for all processes beforehand.

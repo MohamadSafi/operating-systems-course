@@ -1,0 +1,8 @@
+The round-robin (RR) scheduling algorithm is a pre-emptive algorithm that cycles through all the processes in the system on a regular interval, the time quantum. When a process's time quantum expires, the next process in the queue is allocated the CPU. If a process finishes its execution before its quantum expires, the CPU scheduler will switch to the next process in the queue.
+
+Comparing the outputs of all the exercises:
+1. FCFS: Simple and predictable but can lead to the convoy effect.
+2. SJF: Can lead to the shortest average waiting time, but risks starving longer processes.
+3. RR: Provides a good balance between short and long processes, ensuring that all get a fair share of the CPU. However, the performance is highly dependent on the time quantum chosen.
+
+For interactive systems, RR can be more suitable as it ensures responsiveness for all processes, but choosing an appropriate time quantum is critical.
