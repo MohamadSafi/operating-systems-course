@@ -1,0 +1,3 @@
+First Fit Throughput: 166.814947
+Best Fit Throughput: 55.693759
+Worst Fit Throughput: 55.915902
