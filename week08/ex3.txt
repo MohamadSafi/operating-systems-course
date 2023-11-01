@@ -1,0 +1,54 @@
+Observations from running ex3.c and 'vmstat 1' simultaneously:
+
+1. When we run the program, we observe a steady increase in memory usage every second as the program allocates 10 MB of memory and fills it with zeros.
+
+2. The 'si' and 'so' fields in the vmstat output represent the amount of memory swapped in from disk and swapped out to disk, respectively.
+
+3. If there's enough physical memory available, the 'si' and 'so' values should remain at zero or close to zero since the OS doesn't need to swap any memory.
+
+4. If the system starts running low on free physical memory, we might observe an increase in the 'so' value as the OS begins to swap some memory out to disk to free up physical memory for our program.
+
+5. Continual allocation of memory in a tight loop without freeing it (as seen in the ex3.c program) can lead to a situation where the system may run out of physical memory and has to rely on swapping.
+
+6. Such behavior (continuous memory allocation without freeing) is not recommended for real-world applications, as it can degrade system performance due to increased swapping.
+
+Conclusion:
+Memory allocation and management are crucial aspects of application performance. Observing tools like vmstat can give us insights into how our applications interact with system resources, especially memory. Monitoring the 'si' and 'so' fields can help detect potential memory-related performance bottlenecks.
+
+ex3.c output:
+
+Memory usage: 11308 KB
+Memory usage: 21700 KB
+Memory usage: 31996 KB
+Memory usage: 42292 KB
+Memory usage: 52588 KB
+Memory usage: 62884 KB
+Memory usage: 72916 KB
+Memory usage: 83212 KB
+Memory usage: 93508 KB
+Memory usage: 103804 KB
+
+vmstat 1 output:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0      0 1310336 125784 3758092    0    0    23    10   76  127  1  0 99  0  0
+ 0  0      0 1411760 125792 3755516    0    0     0   228  703 1717  1  1 99  0  0
+ 0  0      0 1444160 125800 3733172    0    0     0    56  599 1484  0  0 99  0  0
+ 1  0      0 1439908 125800 3738000    0    0     0     0 3020 7743  4  1 95  0  0
+ 0  0      0 1439484 125800 3737616    0    0     0     0 2460 6004  2  1 98  0  0
+ 0  0      0 1446276 125816 3730316    0    0     0    80 6050 6752  1  1 99  0  0
+ 0  0      0 1452392 125816 3727244    0    0     0     0 4707 4181  0  0 100  0  0
+ 0  0      0 1453592 125816 3729228    0    0     0   536 6016 5862  1  1 99  0  0
+ 0  0      0 1454924 125816 3729240    0    0     0     0 2546 2514  0  0 99  0  0
+ 0  0      0 1458376 125816 3721752    0    0     0     0  593 1458  0  0 99  0  0
+ 0  0      0 1446152 125816 3721872    0    0     0     0 4139 6284  1  1 98  0  0
+ 0  0      0 1445692 125824 3721876    0    0     0    52 5055 3973  0  0 99  0  0
+ 0  0      0 1448744 125824 3721748    0    0     0     0 4668 3187  0  0 99  0  0
+ 0  0      0 1448520 125824 3717700    0    0     0     0 4444 3331  0  0 100  0  0
+ 0  0      0 1460032 125824 3717700    0    0     0     0 4534 3221  0  0 100  0  0
+ 0  0      0 1460524 125824 3717700    0    0     0     0 4706 3111  0  0 99  0  0
+ 0  0      0 1460704 125824 3717708    0    0     0     0 4796 3337  0  0 100  0  0
+ 0  0      0 1464056 125824 3717644    0    0     0   284 4647 3103  0  0 99  0  0
+ 0  0      0 1459088 125824 3728180    0    0     0     0 6062 8132  1  1 98  0  0
+ 1  0      0 1458604 125832 3728244    0    0     0    24 4279 5766  1  1 99  0  0
+ 1  0      0 1457096 125832 3728244    0    0     0     0 2109 4307  1  0 98  0  0
