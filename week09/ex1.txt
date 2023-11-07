@@ -1,0 +1,23 @@
+Random:
+
+    Hit Ratio: 0.397590 (Hits: 33, Misses: 50)
+    The Random algorithm replaces a random page without any consideration of how often or recently it has been accessed.
+    The performance of the Random algorithm is generally unpredictable and can vary widely with each run.
+
+NFU:
+
+    Hit Ratio: 0.603254 (Hits: 38, Misses: 47)
+    NFU keeps a counter for each page that is incremented when the page is referenced. Pages with the lowest counters are replaced first.
+    NFU is a simple approximation of LRU (Least Recently Used), assuming that pages accessed less frequently are likely to be accessed less frequently in the future as well.
+
+Aging:
+
+    Hit Ratio: 0.189724 (Hits: 23, Misses: 60)
+    Aging is a refined version of NFU that introduces a "shift" operation to prevent counters from continuously increasing. This shift also simulates the aging of the references, preventing a page with a high count from staying in memory indefinitely if it is no longer being accessed.
+    The lower hit ratio for Aging suggests that it may be penalizing frequently accessed pages too much, possibly due to the shift operation being too aggressive or due to the way the Aging algorithm has been implemented or configured.
+    It's also possible that if the reference pattern of the workload has frequent accesses scattered across a large set of pages, Aging might be evicting pages that are about to be accessed again, due to an over-emphasis on aging out older references.
+
+General Observations:
+
+    Workload Specificity: Algorithms perform differently depending on the specific access patterns of the workload. If a workload has a strong locality of reference, LRU-based algorithms (like NFU and Aging) usually outperform Random. However, if the access pattern is more random, the advantages of LRU-based algorithms may not be as pronounced.
+    Parameter Tuning: The effectiveness of Aging depends on how quickly it ages the pages out. If the parameters (like the shift frequency and the bit resolution of the age vector) are not tuned to the workload, it might perform poorly.
