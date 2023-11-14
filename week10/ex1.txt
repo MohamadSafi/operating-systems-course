@@ -1,0 +1,16 @@
+Create a symbolic link myfile13.txt in the watched directory to /tmp/myfile1.txt.
+ Modify the file /tmp/myfile1.txt (its content). Did the monitor.c program reported 
+ an event for myfile13.txt? Justify your answer and add it to ex1.txt.
+
+Answer: The monitor.c program reported the creation of the symbolic link myfile13.txt
+but did not report any modification event for myfile13.txt when /tmp/myfile1.txt was modified.
+This is because inotify watches the symlink itself, not the file it points to. Modifications
+to the target file do not reflect as events for the symbolic link.
+
+Remove all duplicates of hard links to myfile11.txt only in the watched directory.
+ fter this, print the stat info of the kept hard link. Check the number of hard links and explain the difference.
+
+Answer: After removing duplicates, only myfile11.txt remains. The inode number remains the same, 
+indicating it's still the same file, but the link count decreases as each hard link is removed. 
+This is because hard links are directory entries for the same inode. Removing a hard link decreases
+the link count but does not delete the file content unless the link count reaches zero.
