@@ -1,0 +1,58 @@
+The output from ./lofsdisk/ex1.txt after changing root with chroot to lofsdisk and running ex1.c:
+
+lib
+file2
+lib64
+..
+lost+found
+.
+file1
+ex1
+ex1.txt
+bin
+
+The output of ex1.c when it's running in my Root Directory:
+
+boot
+bin
+dev
+lib32
+swapfile
+sys
+..
+proc
+usr
+tmp
+.
+run
+sbin
+libx32
+mnt
+lib64
+var
+root
+cdrom
+srv
+snap
+lib
+opt
+etc
+home
+media
+lost+found
+
+Findings about the differences:
+The chroot environment is isolated and minimal, containing only what we've explicitly placed in it.
+ t's an artificial environment created for the purpose of the exercise, lacking the breadth and depth 
+of a full Linux filesystem.
+The main root filesystem is a complete environment that my operating system uses. It includes all the
+directories and files necessary for the full functionality of the OS.
+
+This exercise demonstrates the use of the chroot command to create an isolated environment. 
+In the chrooted environment, the root directory is changed to ./lofsdisk, so the program ex1.c 
+perceives this as the root of the filesystem and lists only its contents. Outside of chroot, 
+the same program lists the contents of my actual root filesystem, showcasing the difference 
+in perspective depending on the environment in which a program is run.
+
+So baiscally we can create a File System on a virtual device that can be mounted to the original File System
+Then we can run a process, that we don’t trust and we don’t want it to see our files and data in a totally safe way.
