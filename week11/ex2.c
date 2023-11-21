@@ -22,10 +22,8 @@ struct inode {
     int used;
 };
 
-// Global file descriptor for the disk file
 int disk_fd;
 
-// Helper functions to be implemented
 void read_free_block_list(char *free_block_list);
 void read_inode(int inode_index, struct inode *node);
 void write_free_block_list(const char *free_block_list);
@@ -77,14 +75,12 @@ int create(char name[MAX_FILENAME], int size) {
     struct inode node;
     int free_block_count = 0, i, j;
 
-    // Step 1: Check for sufficient free space
     read_free_block_list(free_block_list);
     for (i = 0; i < FREE_BLOCK_LIST_SIZE; i++) {
         if (free_block_list[i] == 0) free_block_count++;
     }
     if (free_block_count < size) return -1; // Not enough space
 
-    // Step 2: Find a free inode
     for (i = 0; i < MAX_FILES; i++) {
         read_inode(i, &node);
         if (node.used == 0) break;
@@ -96,7 +92,6 @@ int create(char name[MAX_FILENAME], int size) {
     node.size = size;
     node.used = 1;
 
-    // Step 3: Allocate data blocks
     for (j = 0, free_block_count = 0; j < FREE_BLOCK_LIST_SIZE && free_block_count < size; j++) {
         if (free_block_list[j] == 0) {
             free_block_list[j] = 1; // Mark block as in-use
@@ -104,11 +99,10 @@ int create(char name[MAX_FILENAME], int size) {
         }
     }
 
-    // Step 4: Write inode and free block list to disk
     write_free_block_list(free_block_list);
     write_inode(i, &node);
 
-    return 0; // Success
+    return 0; 
 }
 
 int delete(char name[MAX_FILENAME]) {
@@ -116,10 +110,8 @@ int delete(char name[MAX_FILENAME]) {
     struct inode node;
     int i, j;
 
-    // Step 1: Read the free block list
     read_free_block_list(free_block_list);
 
-    // Step 2: Locate the inode for the file
     for (i = 0; i < MAX_FILES; i++) {
         read_inode(i, &node);
         if (node.used == 1 && strncmp(node.name, name, MAX_FILENAME) == 0) {
@@ -128,7 +120,6 @@ int delete(char name[MAX_FILENAME]) {
     }
     if (i == MAX_FILES) return -1; // File not found
 
-    // Step 3: Free the blocks of the file
     for (j = 0; j < node.size; j++) {
         int blockNum = node.blockPointers[j];
         if (blockNum < FREE_BLOCK_LIST_SIZE) {
@@ -136,17 +127,15 @@ int delete(char name[MAX_FILENAME]) {
         }
     }
 
-    // Step 4: Mark inode as free
     node.used = 0;
     memset(&node.name, 0, MAX_FILENAME);  // Clear the file name
     node.size = 0;
     memset(&node.blockPointers, 0, sizeof(node.blockPointers));  // Clear the block pointers
 
-    // Step 5: Write the inode and free block list back to disk
     write_free_block_list(free_block_list);
     write_inode(i, &node);
 
-    return 0; // Success
+    return 0; 
 }
 
 
@@ -164,7 +153,7 @@ int ls(void) {
         }
     }
 
-    return 0; // Success
+    return 0; 
 }
 
 
@@ -172,7 +161,6 @@ int fs_read(char name[MAX_FILENAME], int blockNum, char buf[BLOCK_SIZE]) {
     struct inode node;
     int i, found = 0;
 
-    // Step 1: Locate the inode for the file
     for (i = 0; i < MAX_FILES; i++) {
         read_inode(i, &node);
         if (node.used == 1 && strncmp(node.name, name, MAX_FILENAME) == 0) {
@@ -182,16 +170,14 @@ int fs_read(char name[MAX_FILENAME], int blockNum, char buf[BLOCK_SIZE]) {
     }
     if (!found) return -1; // File not found
 
-    // Step 2: Check if blockNum is valid
     if (blockNum < 0 || blockNum >= node.size) return -1; // Invalid block number
 
-    // Step 3: Read the specified block
     int blockAddr = node.blockPointers[blockNum];
     if (lseek(disk_fd, blockAddr * BLOCK_SIZE, SEEK_SET) < 0) return -1; // Seek error
 
     if (read(disk_fd, buf, BLOCK_SIZE) != BLOCK_SIZE) return -1; // Read error
 
-    return 0; // Success
+    return 0; 
 }
 
 
@@ -199,7 +185,6 @@ int fs_write(char name[MAX_FILENAME], int blockNum, char buf[BLOCK_SIZE]) {
     struct inode node;
     int i, found = 0;
 
-    // Step 1: Locate the inode for the file
     for (i = 0; i < MAX_FILES; i++) {
         read_inode(i, &node);
         if (node.used == 1 && strncmp(node.name, name, MAX_FILENAME) == 0) {
@@ -209,80 +194,96 @@ int fs_write(char name[MAX_FILENAME], int blockNum, char buf[BLOCK_SIZE]) {
     }
     if (!found) return -1; // File not found
 
-    // Step 2: Check if blockNum is valid
     if (blockNum < 0 || blockNum >= node.size) return -1; // Invalid block number
 
-    // Step 3: Write to the specified block
     int blockAddr = node.blockPointers[blockNum];
     if (lseek(disk_fd, blockAddr * BLOCK_SIZE, SEEK_SET) < 0) return -1; // Seek error
 
     if (write(disk_fd, buf, BLOCK_SIZE) != BLOCK_SIZE) return -1; // Write error
 
-    return 0; // Success
+    return 0; 
 }
 
-
-
-
-
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <input file>\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "Usage: %s <disk file> <input file>\n", argv[0]);
         return 1;
     }
 
-    FILE *inputFile = fopen(argv[1], "r");
+    // Open the disk file for both reading and writing
+    disk_fd = open(argv[1], O_RDWR);
+    if (disk_fd < 0) {
+        perror("Error opening disk file");
+        return 1;
+    }
+
+    // Open the input file for reading commands
+    FILE *inputFile = fopen(argv[2], "r");
     if (inputFile == NULL) {
         perror("Error opening input file");
+        close(disk_fd);
         return 1;
     }
 
-    char line[256], command, fileName[MAX_FILENAME];
+
+    char diskFileName[256];
+    if (fgets(diskFileName, sizeof(diskFileName), inputFile) == NULL) {
+        perror("Error reading disk file name from input file");
+        fclose(inputFile);
+        return 1;
+    }
+
+    diskFileName[strcspn(diskFileName, "\n")] = 0;
+
+    // Print the disk name
+    printf("Disk Name: %s\n", diskFileName);
+
+    // Process file system commands
+    char command;
+    char fileName[MAX_FILENAME];
     int size, blockNum;
-    char buf[BLOCK_SIZE];
+    char buf[BLOCK_SIZE]; // Ensure that buf is defined
 
-    while (fgets(line, sizeof(line), inputFile)) {
-        if (sscanf(line, "%c %s %d", &command, fileName, &size) < 1) continue;
-
+    while (fscanf(inputFile, " %c", &command) != EOF) {
         switch (command) {
             case 'C':
+                if (fscanf(inputFile, "%s %d", fileName, &size) != 2) break;
+                printf("C %s %d ", fileName, size);
                 if (create(fileName, size) == 0) {
-                    printf("Created file %s with size %d blocks\n", fileName, size);
+                    printf("Created file %s of this size %d blocks\n", fileName, size);
                 } else {
                     printf("Error creating file %s\n", fileName);
                 }
                 break;
             case 'D':
+                if (fscanf(inputFile, "%s", fileName) != 1) break;
+                printf("D %s ", fileName);
                 if (delete(fileName) == 0) {
-                    printf("Deleted file %s\n", fileName);
+                    printf("Deleted this file %s\n", fileName);
                 } else {
                     printf("Error deleting file %s\n", fileName);
                 }
                 break;
             case 'L':
+                printf("L list of all files on disk and their sizes\n");
                 ls();
                 break;
             case 'R':
-                if (sscanf(line, "R %s %d", fileName, &blockNum) != 2) {
-                    printf("Invalid command format for read\n");
-                    continue;
-                }
+                if (fscanf(inputFile, "%s %d", fileName, &blockNum) != 2) break;
+                printf("R %s %d ", fileName, blockNum);
                 memset(buf, 0, BLOCK_SIZE);
                 if (fs_read(fileName, blockNum, buf) == 0) {
-                    printf("Read block %d of file %s\n", blockNum, fileName);
-                    // Optionally print buf content here
+                    printf("Read this block %d from this file %s\n", blockNum, fileName);
                 } else {
                     printf("Error reading from file %s\n", fileName);
                 }
                 break;
             case 'W':
-                if (sscanf(line, "W %s %d", fileName, &blockNum) != 2) {
-                    printf("Invalid command format for write\n");
-                    continue;
-                }
+                if (fscanf(inputFile, "%s %d", fileName, &blockNum) != 2) break;
+                printf("W %s %d ", fileName, blockNum);
                 memset(buf, 0, BLOCK_SIZE); // Fill buf with data to write
                 if (fs_write(fileName, blockNum, buf) == 0) {
-                    printf("Wrote to block %d of file %s\n", blockNum, fileName);
+                    printf("Write to this block %d in this file %s\n", blockNum, fileName);
                 } else {
                     printf("Error writing to file %s\n", fileName);
                 }
@@ -293,7 +294,6 @@ int main(int argc, char *argv[]) {
     }
 
     fclose(inputFile);
+    close(disk_fd);
     return 0;
 }
-
-
